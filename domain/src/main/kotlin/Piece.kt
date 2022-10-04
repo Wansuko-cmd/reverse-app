@@ -1,4 +1,7 @@
-sealed interface Cell{
+/**
+ * ボードの上の状態
+ */
+sealed interface Cell {
     object Nothing : Cell
     sealed interface Piece: Cell {
         object Black : Piece
