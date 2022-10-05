@@ -1,0 +1,11 @@
+[versions]
+kotlin = "1.7.10"
+mockk = "1.12.8"
+
+[libraries]
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+
+[bundles]
+test = ["kotlin-test", "kotlin-test-junit", "mockk"]
