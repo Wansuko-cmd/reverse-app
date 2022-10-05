@@ -9,6 +9,10 @@ class Board private constructor(
         columns[coordinate.row][coordinate.column] = value
     }
 
+    override fun toString(): String = columns
+        .joinToString { "[$it]" }
+        .let { "Board($it)" }
+
     private fun getLinesStatus(coordinate: Coordinate): List<LineStatus> {
         fun getLineStatus(condition: (Coordinate) -> Coordinate?): LineStatus =
             LineStatus(
@@ -87,7 +91,7 @@ class Board private constructor(
         fun create(size: Int): Board {
             val board = Board(columns = List(size) { Column.create(size) })
             if (size >= 2) {
-                val coordinate = board.Coordinate(size / 2, size / 2)
+                val coordinate = board.Coordinate((size - 1) / 2, (size - 1) / 2)
                 board[coordinate] = Cell.Piece.White
                 board[coordinate.right!!] = Cell.Piece.Black
                 board[coordinate.down!!] = Cell.Piece.Black
@@ -99,12 +103,13 @@ class Board private constructor(
     }
 }
 
-private class Column private constructor(
-    private val pieces: List<Cell>,
+class Column private constructor(
+    pieces: List<Cell>,
 ) : MutableList<Cell> by ArrayList(pieces) {
     fun count(): PieceCount =
-        pieces.count { it == Cell.Piece.Black } vs pieces.count { it == Cell.Piece.White }
+        this.count { it == Cell.Piece.Black } vs this.count { it == Cell.Piece.White }
 
+    override fun toString(): String = this.joinToString { it.javaClass.name }
     companion object {
         fun create(size: Int) = Column(List(size) { Cell.Nothing })
     }
