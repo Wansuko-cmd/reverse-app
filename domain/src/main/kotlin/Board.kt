@@ -3,8 +3,13 @@ import PieceCount.Companion.vs
 class Board private constructor(
     private val columns: List<Column>,
 ) {
-    // 8×8のボードなら8を代入
-    private val size = columns.size
+    private val width: Int = columns.first().size
+    private val height: Int = columns.size
+
+    init {
+        assert(columns.distinctBy { it.size }.size == 1)
+    }
+
     operator fun get(coordinate: Coordinate) = columns[coordinate.row][coordinate.column]
     private operator fun set(coordinate: Coordinate, value: Cell) {
         columns[coordinate.row][coordinate.column] = value
@@ -44,8 +49,8 @@ class Board private constructor(
             .fold(0 vs 0) { acc, column -> acc + column }
 
     fun placeableCoordinates(piece: Cell.Piece) =
-        (0 until size)
-            .flatMap { row -> (0 until size).map { column -> Coordinate(row, column) } }
+        (0 until height)
+            .flatMap { row -> (0 until width).map { column -> Coordinate(row, column) } }
             .filter { coordinate -> this.isPlaceable(coordinate, piece) }
 
     fun place(
@@ -86,10 +91,10 @@ class Board private constructor(
      * 縦軸 -> row, 横軸 -> column ((2, 3)だと、上から2つめ、左から3つめの座標を指す）
      */
     inner class Coordinate(val row: Int, val column: Int) {
-        val left get() = if (column in 1 until  size) Coordinate(row, column - 1) else null
-        val up get() = if (row in 1 until  size) Coordinate(row - 1, column) else null
-        val right get() = if (column in 0 until size - 1) Coordinate(row, column + 1) else null
-        val down get() = if (row in 0 until size - 1) Coordinate(row + 1, column) else null
+        val left get() = if (column in 1 until  width) Coordinate(row, column - 1) else null
+        val up get() = if (row in 1 until  height) Coordinate(row - 1, column) else null
+        val right get() = if (column in 0 until width - 1) Coordinate(row, column + 1) else null
+        val down get() = if (row in 0 until height - 1) Coordinate(row + 1, column) else null
         override fun toString(): String = "Coordinate(row: $row, column: $column)"
         override fun equals(other: Any?): Boolean =
             other is Coordinate && row == other.row && column == other.column
@@ -134,7 +139,7 @@ class Column private constructor(
 /**
  * 特定の座標から一方向に存在するセルとその座標のリスト（自身は含まない）
  */
-data class LineStatus(
+private data class LineStatus(
     private val cells: List<Pair<Cell, Board.Coordinate>> = listOf(),
 ) : List<Pair<Cell, Board.Coordinate>> by ArrayList(cells) {
     operator fun plus(other: Pair<Cell, Board.Coordinate>) = LineStatus(cells + other)
