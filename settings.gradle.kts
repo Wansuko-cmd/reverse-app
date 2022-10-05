@@ -17,4 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "reverse"
 
 include("domain")
-
+include("usecase")

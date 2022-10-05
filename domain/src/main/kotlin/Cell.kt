@@ -4,13 +4,26 @@
 sealed interface Cell {
     object Nothing : Cell
     sealed interface Piece: Cell {
-        object Black : Piece
-        object White : Piece
+        fun reverse(): Piece
+        object Black : Piece {
+            override fun reverse(): Piece = White
+        }
+        object White : Piece {
+            override fun reverse(): Piece = Black
+        }
     }
 }
 
+fun nothing(size: Int) = List(size) { Cell.Nothing }
+fun white(size: Int) = List(size) { Cell.Piece.White }
+fun black(size: Int) = List(size) { Cell.Piece.Black }
+
 data class PieceCount(val black: Int, val white: Int) {
     operator fun plus(other: PieceCount) = this.black + other.black vs this.white + other.white
+    operator fun get(piece: Cell.Piece) = when (piece) {
+        is Cell.Piece.Black -> black
+        is Cell.Piece.White -> white
+    }
     companion object {
         infix fun Int.vs(white: Int) = PieceCount(black = this, white = white)
     }

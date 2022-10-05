@@ -3,5 +3,6 @@ plugins {
 }
 
 dependencies {
+    implementation(project(":domain"))
     testImplementation(libs.bundles.test)
 }

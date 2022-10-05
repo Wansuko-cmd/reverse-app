@@ -1,25 +1,41 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
-plugins {
-    kotlin("jvm") version "1.7.10"
-    application
+task<Delete>("clean") {
+    delete(rootProject.buildDir)
 }
 
-group = "me.ryookizuka"
-version = "1.0-SNAPSHOT"
+subprojects {
 
-dependencies {
-    testImplementation(kotlin("test"))
-}
+    val ktlint by configurations.creating
 
-tasks.test {
-    useJUnitPlatform()
-}
+    dependencies {
+        ktlint("com.pinterest:ktlint:0.44.0") {
+            attributes {
+                attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
+            }
+        }
+    }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-}
+    val outputDir = "${project.buildDir}/reports/ktlint/"
+    val inputFiles = project.fileTree(mapOf("dir" to "src", "include" to "**/*.kt"))
 
-application {
-    mainClass.set("MainKt")
+    @Suppress("UNUSED_VARIABLE")
+    val ktlintCheck by tasks.creating(JavaExec::class) {
+        inputs.files(inputFiles)
+        outputs.dir(outputDir)
+
+        description = "Check Kotlin code style."
+        classpath = ktlint
+        mainClass.set("com.pinterest.ktlint.Main")
+        args = listOf("src/**/*.kt")
+    }
+
+    @Suppress("UNUSED_VARIABLE")
+    val ktlintFormat by tasks.creating(JavaExec::class) {
+        inputs.files(inputFiles)
+        outputs.dir(outputDir)
+
+        description = "Fix Kotlin code style deviations."
+        classpath = ktlint
+        mainClass.set("com.pinterest.ktlint.Main")
+        args = listOf("-F", "src/**/*.kt")
+    }
 }

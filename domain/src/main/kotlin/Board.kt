@@ -57,6 +57,7 @@ class Board private constructor(
         coordinate: Coordinate,
         piece: Cell.Piece,
     ): Board {
+        if (!this.isPlaceable(coordinate, piece)) return this
         val newBoard = reconstruct(columns)
         newBoard[coordinate] = piece
         for (lineStatus in getLinesStatus(coordinate)) {
@@ -115,7 +116,7 @@ class Board private constructor(
             return board
         }
 
-        fun reconstruct(columns: List<Column>): Board = Board(columns)
+        fun reconstruct(columns: List<Column>): Board = Board(columns.map { Column.reconstruct(it.toList()) })
     }
 }
 
