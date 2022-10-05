@@ -1,7 +1,7 @@
 import PieceCount.Companion.vs
 
 class Board private constructor(
-    private val columns: List<Column>,
+    private val columns: List<Column>
 ) {
     private val width: Int = columns.first().size
     private val height: Int = columns.size
@@ -30,7 +30,6 @@ class Board private constructor(
                     .map { this[it] to it }
             )
 
-
         return listOf(
             getLineStatus { it.left },
             getLineStatus { it.right },
@@ -39,7 +38,7 @@ class Board private constructor(
             getLineStatus { it.left?.up },
             getLineStatus { it.right?.up },
             getLineStatus { it.left?.down },
-            getLineStatus { it.right?.down },
+            getLineStatus { it.right?.down }
         )
     }
 
@@ -55,7 +54,7 @@ class Board private constructor(
 
     fun place(
         coordinate: Coordinate,
-        piece: Cell.Piece,
+        piece: Cell.Piece
     ): Board {
         if (!this.isPlaceable(coordinate, piece)) return this
         val newBoard = reconstruct(columns)
@@ -75,7 +74,7 @@ class Board private constructor(
 
     private fun isPlaceable(
         coordinate: Coordinate,
-        piece: Cell.Piece,
+        piece: Cell.Piece
     ): Boolean {
         if (this[coordinate] !is Cell.Nothing) return false
 
@@ -92,8 +91,8 @@ class Board private constructor(
      * 縦軸 -> row, 横軸 -> column ((2, 3)だと、上から2つめ、左から3つめの座標を指す）
      */
     inner class Coordinate(val row: Int, val column: Int) {
-        val left get() = if (column in 1 until  width) Coordinate(row, column - 1) else null
-        val up get() = if (row in 1 until  height) Coordinate(row - 1, column) else null
+        val left get() = if (column in 1 until width) Coordinate(row, column - 1) else null
+        val up get() = if (row in 1 until height) Coordinate(row - 1, column) else null
         val right get() = if (column in 0 until width - 1) Coordinate(row, column + 1) else null
         val down get() = if (row in 0 until height - 1) Coordinate(row + 1, column) else null
         override fun toString(): String = "Coordinate(row: $row, column: $column)"
@@ -121,7 +120,7 @@ class Board private constructor(
 }
 
 class Column private constructor(
-    pieces: List<Cell>,
+    pieces: List<Cell>
 ) : MutableList<Cell> by ArrayList(pieces) {
     fun count(): PieceCount =
         this.count { it == Cell.Piece.Black } vs this.count { it == Cell.Piece.White }
@@ -141,7 +140,7 @@ class Column private constructor(
  * 特定の座標から一方向に存在するセルとその座標のリスト（自身は含まない）
  */
 private data class LineStatus(
-    private val cells: List<Pair<Cell, Board.Coordinate>> = listOf(),
+    private val cells: List<Pair<Cell, Board.Coordinate>> = listOf()
 ) : List<Pair<Cell, Board.Coordinate>> by ArrayList(cells) {
     operator fun plus(other: Pair<Cell, Board.Coordinate>) = LineStatus(cells + other)
 

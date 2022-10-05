@@ -3,7 +3,7 @@
  */
 sealed interface Cell {
     object Nothing : Cell
-    sealed interface Piece: Cell {
+    sealed interface Piece : Cell {
         fun reverse(): Piece
         object Black : Piece {
             override fun reverse(): Piece = White

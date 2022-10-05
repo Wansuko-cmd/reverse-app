@@ -1,5 +1,5 @@
 class DeviseNextMoveUseCase(
-    private val checkAllPattenAlgorithm: CheckAllPattenAlgorithm,
+    private val checkAllPattenAlgorithm: CheckAllPattenAlgorithm
 ) {
     /**
      *  次に置くべき駒の場所を返す
