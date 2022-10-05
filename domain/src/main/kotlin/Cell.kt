@@ -17,6 +17,9 @@ sealed interface Cell {
 fun nothing(size: Int) = List(size) { Cell.Nothing }
 fun white(size: Int) = List(size) { Cell.Piece.White }
 fun black(size: Int) = List(size) { Cell.Piece.Black }
+fun List<Cell>.nothing(size: Int) = this + List(size) { Cell.Nothing }
+fun List<Cell>.white(size: Int) = this + List(size) { Cell.Piece.White }
+fun List<Cell>.black(size: Int) = this + List(size) { Cell.Piece.Black }
 
 data class PieceCount(val black: Int, val white: Int) {
     operator fun plus(other: PieceCount) = this.black + other.black vs this.white + other.white
