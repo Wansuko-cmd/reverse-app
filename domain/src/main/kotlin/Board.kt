@@ -3,8 +3,8 @@ import PieceCount.Companion.vs
 class Board private constructor(
     private val columns: List<Column>
 ) {
-    private val width: Int = columns.first().size
-    private val height: Int = columns.size
+    val width: Int = columns.first().size
+    val height: Int = columns.size
 
     init {
         assert(columns.distinctBy { it.size }.size == 1)
@@ -16,8 +16,8 @@ class Board private constructor(
     }
 
     override fun toString(): String = columns
-        .joinToString { "[$it]" }
-        .let { "Board($it)" }
+        .joinToString(separator = "\n") { "[$it]" }
+        .let { "Board(\n$it\n)" }
 
     override fun equals(other: Any?): Boolean = other is Board && this.columns == other.columns
     override fun hashCode(): Int = columns.hashCode()
@@ -46,6 +46,8 @@ class Board private constructor(
         columns
             .map { it.count() }
             .fold(0 vs 0) { acc, column -> acc + column }
+
+    fun countNothing(): Int = columns.sumOf { it.countNothing() }
 
     fun placeableCoordinates(piece: Cell.Piece) =
         (0 until height)
@@ -124,6 +126,7 @@ class Column private constructor(
 ) : MutableList<Cell> by ArrayList(pieces) {
     fun count(): PieceCount =
         this.count { it == Cell.Piece.Black } vs this.count { it == Cell.Piece.White }
+    fun countNothing(): Int = this.count { it == Cell.Nothing }
 
     override fun toString(): String = this.joinToString { it.javaClass.name }
     override fun equals(other: Any?): Boolean =
