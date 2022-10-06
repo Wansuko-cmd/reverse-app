@@ -1,3 +1,4 @@
+import kotlinx.coroutines.runBlocking
 import kotlin.system.measureTimeMillis
 
 val deviseNextMoveUseCase = DeviseNextMoveUseCase(
@@ -5,7 +6,7 @@ val deviseNextMoveUseCase = DeviseNextMoveUseCase(
     checkAllPattenAlgorithm = CheckAllPattenAlgorithm(),
 )
 
-fun main() {
+fun main() = runBlocking {
     var board = Board.create(8)
     while (board.countNothing() > 0) {
         board = placeByCPU(board, Cell.Piece.Black)
@@ -24,7 +25,7 @@ fun placeByPlayer(board: Board, piece: Cell.Piece): Board {
     return board.place(coordinate, piece)
 }
 
-fun placeByCPU(board: Board, piece: Cell.Piece): Board {
+suspend fun placeByCPU(board: Board, piece: Cell.Piece): Board {
     if (board.placeableCoordinates(piece).isEmpty()) return board
     println(board.toDisplayString())
     val (time, coordinate) = measure { deviseNextMoveUseCase(board, piece)!! }
@@ -58,7 +59,7 @@ fun Board.toDisplayString(): String = this.toString()
     .replace("Cell\$Piece\$Black", "○")
     .replace("Cell\$Piece\$White", "●")
 
-fun <T> measure(block: () -> T): Pair<Long, T> {
+inline fun <T> measure(block: () -> T): Pair<Long, T> {
     var value: T?
     return measureTimeMillis { value = block() } to value!!
 }
