@@ -1,3 +1,5 @@
+import kotlin.system.measureTimeMillis
+
 val deviseNextMoveUseCase = DeviseNextMoveUseCase(
     randomAlgorithm = RandomAlgorithm(),
     checkAllPattenAlgorithm = CheckAllPattenAlgorithm(),
@@ -18,13 +20,17 @@ fun placeByPlayer(board: Board, piece: Cell.Piece): Board {
     if (board.placeableCoordinates(piece).isEmpty()) return board
     println(board.toDisplayString())
     println(board.placeableCoordinates(piece))
-    val blackCoordinate = readCoordinate(board, piece)
-    return board.place(blackCoordinate, piece)
+    val coordinate = readCoordinate(board, piece)
+    return board.place(coordinate, piece)
 }
 
 fun placeByCPU(board: Board, piece: Cell.Piece): Board {
     if (board.placeableCoordinates(piece).isEmpty()) return board
-    return board.place(deviseNextMoveUseCase(board, piece)!!, piece)
+    println(board.toDisplayString())
+    val (time, coordinate) = measure { deviseNextMoveUseCase(board, piece)!! }
+    println(coordinate)
+    println("$time ms")
+    return board.place(coordinate, piece)
 }
 
 fun readCoordinate(board: Board, piece: Cell.Piece): Board.Coordinate {
@@ -51,3 +57,8 @@ fun Board.toDisplayString(): String = this.toString()
     .replace("Cell\$Nothing", " ")
     .replace("Cell\$Piece\$Black", "○")
     .replace("Cell\$Piece\$White", "●")
+
+fun <T> measure(block: () -> T): Pair<Long, T> {
+    var value: T?
+    return measureTimeMillis { value = block() } to value!!
+}

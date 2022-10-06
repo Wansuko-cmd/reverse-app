@@ -7,7 +7,7 @@ class DeviseNextMoveUseCase(
      *  置ける場所がない場合はnullを返す
      */
     operator fun invoke(board: Board, piece: Cell.Piece): Board.Coordinate? = when {
-        board.countNothing() <= 10 -> checkAllPattenAlgorithm(board, piece)
+        board.countNothing() <= 11 -> checkAllPattenAlgorithm(board, piece)
         else -> randomAlgorithm(board, piece)
     }
 }
