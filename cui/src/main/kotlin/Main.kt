@@ -1,9 +1,17 @@
+val deviseNextMoveUseCase = DeviseNextMoveUseCase(
+    randomAlgorithm = RandomAlgorithm(),
+    checkAllPattenAlgorithm = CheckAllPattenAlgorithm(),
+)
+
 fun main() {
     var board = Board.create(8)
     while (board.countNothing() > 0) {
-        board = placeByPlayer(board, Cell.Piece.Black)
-        board = placeByPlayer(board, Cell.Piece.White)
+        board = placeByCPU(board, Cell.Piece.Black)
+        board = placeByCPU(board, Cell.Piece.White)
     }
+    println(board.toDisplayString())
+    println(board.count())
+    println("end")
 }
 
 fun placeByPlayer(board: Board, piece: Cell.Piece): Board {
@@ -12,6 +20,11 @@ fun placeByPlayer(board: Board, piece: Cell.Piece): Board {
     println(board.placeableCoordinates(piece))
     val blackCoordinate = readCoordinate(board, piece)
     return board.place(blackCoordinate, piece)
+}
+
+fun placeByCPU(board: Board, piece: Cell.Piece): Board {
+    if (board.placeableCoordinates(piece).isEmpty()) return board
+    return board.place(deviseNextMoveUseCase(board, piece)!!, piece)
 }
 
 fun readCoordinate(board: Board, piece: Cell.Piece): Board.Coordinate {
