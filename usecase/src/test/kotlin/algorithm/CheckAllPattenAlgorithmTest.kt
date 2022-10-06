@@ -31,4 +31,21 @@ class CheckAllPattenAlgorithmTest {
         )
         assertThat(algorithm(board, Cell.Piece.Black)).isEqualTo(board.Coordinate(6, 0))
     }
+
+    @Test
+    fun 置ける場所がない場合はnullを返す() {
+        val board = Board.reconstruct(
+            columns = listOf(
+                Column.reconstruct(white(8)),
+                Column.reconstruct(white(8)),
+                Column.reconstruct(white(8)),
+                Column.reconstruct(white(8)),
+                Column.reconstruct(white(8)),
+                Column.reconstruct(white(8)),
+                Column.reconstruct(white(8)),
+                Column.reconstruct(white(7).nothing(1)),
+            )
+        )
+        assertThat(algorithm(board, Cell.Piece.Black)).isNull()
+    }
 }
