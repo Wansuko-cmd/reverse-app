@@ -5,6 +5,18 @@ class Board private constructor(
 ) {
     val width: Int = columns.first().size
     val height: Int = columns.size
+    private val coordinates = (0 until height)
+        .flatMap { row ->
+            (0 until width)
+                .map { column -> Coordinate(row, column) }
+        }
+    private val corner = listOf(
+        Coordinate(0, 0),
+        Coordinate(0, width - 1),
+        Coordinate(height - 1, 0),
+        Coordinate(height - 1, width - 1),
+    )
+    val aroundCorner: List<Coordinate> = corner.flatMap { it.around }
 
     init {
         assert(columns.distinctBy { it.size }.size == 1)
@@ -50,9 +62,7 @@ class Board private constructor(
     fun countNothing(): Int = columns.sumOf { it.countNothing() }
 
     fun placeableCoordinates(piece: Cell.Piece) =
-        (0 until height)
-            .flatMap { row -> (0 until width).map { column -> Coordinate(row, column) } }
-            .filter { coordinate -> this.isPlaceable(coordinate, piece) }
+        coordinates.filter { coordinate -> this.isPlaceable(coordinate, piece) }
 
     fun place(
         coordinate: Coordinate,
@@ -97,6 +107,7 @@ class Board private constructor(
         val up get() = if (row in 1 until height) Coordinate(row - 1, column) else null
         val right get() = if (column in 0 until width - 1) Coordinate(row, column + 1) else null
         val down get() = if (row in 0 until height - 1) Coordinate(row + 1, column) else null
+        val around get() = listOfNotNull(left?.up, up, right?.up, left, right, left?.down, down, right?.down)
         override fun toString(): String = "Coordinate(row: $row, column: $column)"
         override fun equals(other: Any?): Boolean =
             other is Coordinate && row == other.row && column == other.column
@@ -151,7 +162,7 @@ private data class LineStatus(
      * 引数に渡された駒を置いた時にひっくり返せる駒が存在するかどうか
      */
     fun isPlaceableLine(piece: Cell.Piece): Boolean {
-        if (this.firstOrNull()?.first == piece || this.firstOrNull()?.first is Cell.Nothing) return false
+        if (this.firstOrNull()?.first != piece.reverse()) return false
         for (cell in this) {
             when (cell.first) {
                 is Cell.Nothing -> break

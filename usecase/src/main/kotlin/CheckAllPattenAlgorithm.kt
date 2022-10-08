@@ -27,10 +27,8 @@ class CheckAllPattenAlgorithm {
             }
 
             coordinates
-                .map {
-                    async { searchMaxPieceCount(board.place(it, piece), piece.reverse()) }
-                }
                 // 相手が最大限取れるように進めた場合の駒の数を取得
+                .map { async { searchMaxPieceCount(board.place(it, piece), piece.reverse()) } }
                 .map { it.await() }
                 // 最も自分の駒が多い場合を選択
                 .maxBy { it[piece] }

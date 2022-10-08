@@ -19,3 +19,4 @@ rootProject.name = "reverse"
 include("domain")
 include("usecase")
 include("cui")
+include("data")

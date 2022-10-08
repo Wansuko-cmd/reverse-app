@@ -2,7 +2,8 @@ import kotlinx.coroutines.runBlocking
 import kotlin.system.measureTimeMillis
 
 val deviseNextMoveUseCase = DeviseNextMoveUseCase(
-    randomAlgorithm = RandomAlgorithm(),
+    formulaAlgorithm = FormulaAlgorithm(FormulaQueryServiceImpl()),
+    leavePlaceableCoordinateAlgorithm = LeavePlaceableCoordinateAlgorithm(),
     checkAllPattenAlgorithm = CheckAllPattenAlgorithm(),
 )
 
@@ -34,6 +35,15 @@ suspend fun placeByCPU(board: Board, piece: Cell.Piece): Board {
     return board.place(coordinate, piece)
 }
 
+suspend fun placeRandom(board: Board, piece: Cell.Piece): Board {
+    if (board.placeableCoordinates(piece).isEmpty()) return board
+    println(board.toDisplayString())
+    val (time, coordinate) = measure { board.placeableCoordinates(piece).random() }
+    println(coordinate)
+    println("$time ms")
+    return board.place(coordinate, piece)
+}
+
 fun readCoordinate(board: Board, piece: Cell.Piece): Board.Coordinate {
     while (true) {
         val input = readLine()
@@ -44,8 +54,8 @@ fun readCoordinate(board: Board, piece: Cell.Piece): Board.Coordinate {
         if (
             input?.count() == 2 &&
             input.all { it != null } &&
-            0 < input[0]!! && input[0]!! < board.height &&
-            0 < input[1]!! && input[1]!! < board.width
+            0 <= input[0]!! && input[0]!! < board.height &&
+            0 <= input[1]!! && input[1]!! < board.width
         ) {
             val coordinate = board.Coordinate(row = input[0]!!, column = input[1]!!)
             if (board.placeableCoordinates(piece).contains(coordinate)) return coordinate
