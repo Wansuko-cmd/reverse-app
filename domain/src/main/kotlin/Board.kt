@@ -64,6 +64,24 @@ class Board private constructor(
     fun placeableCoordinates(piece: Cell.Piece) =
         coordinates.filter { coordinate -> this.isPlaceable(coordinate, piece) }
 
+    fun openness(coordinate: Coordinate, piece: Cell.Piece): Int? {
+        if (!this.isPlaceable(coordinate, piece)) return null
+        val coordinates = mutableSetOf<Coordinate>()
+        for (lineStatus in getLinesStatus(coordinate)) {
+            if (!lineStatus.isPlaceableLine(piece)) continue
+            for (cell in lineStatus) {
+                when (cell.first) {
+                    Cell.Nothing, piece -> break
+                    else -> coordinates.add(cell.second)
+                }
+            }
+        }
+        return coordinates
+            .flatMap { it.around }
+            .distinct()
+            .count { this[it] == Cell.Nothing }
+    }
+
     fun place(
         coordinate: Coordinate,
         piece: Cell.Piece

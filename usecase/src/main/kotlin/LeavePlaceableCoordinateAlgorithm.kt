@@ -3,29 +3,35 @@ import kotlinx.coroutines.coroutineScope
 
 class LeavePlaceableCoordinateAlgorithm {
     suspend operator fun invoke(board: Board, piece: Cell.Piece): Board.Coordinate? {
-        val coordinate = board.placeableCoordinateWithoutAroundCorner(piece)
-        if (coordinate.isEmpty()) return null
+        val coordinates = board.placeableCoordinateWithoutAroundCorner(piece)
+        if (coordinates.isEmpty()) return null
 
-        // 相手が最善手を打った時の（相手目線の）評価値のなかで最も低くなるものを採用する
-        return coordinate.minBy {
-            searchMaxPlaceableCoordinate(board.place(it, piece), REPEAT_AMOUNT, piece.reverse())
+        return coordinates.maxBy { coordinate ->
+            (0..REPEAT_AMOUNT).sumOf { readNextMove(board, coordinate, piece, it) }
         }
     }
 
-    private suspend fun searchMaxPlaceableCoordinate(board: Board, repeat: Int, piece: Cell.Piece): Int =
-        coroutineScope {
-            val coordinate = board.placeableCoordinates(piece)
-            if (repeat <= 0 || coordinate.isEmpty()) {
-                // 評価値を返す
-                return@coroutineScope evaluate(board, piece, coordinate.count())
-            }
-            coordinate
-                // 相手が最善手を打った時の（相手目線の）評価値が低いほど自分の評価値が高いと考える
-                // そのため、相手の評価値に - をかけたものを自分の評価値とする
-                .map { async { -searchMaxPlaceableCoordinate(board.place(it, piece), repeat - 1, piece.reverse()) } }
-                // 自分の評価値が最大となる一手を選ぶ
-                .maxOf { it.await() }
-        }
+    private suspend fun readNextMove(
+        board: Board,
+        coordinate: Board.Coordinate,
+        piece: Cell.Piece,
+        count: Int,
+    ): Int = coroutineScope {
+        if (count <= 0) return@coroutineScope evaluate(board, piece, coordinate)
+
+        val placedBoard = board.place(coordinate, piece)
+        val reversedPiece = piece.reverse()
+        val placeableCoordinate = placedBoard.placeableCoordinates(reversedPiece)
+
+        if (placeableCoordinate.isEmpty()) return@coroutineScope evaluate(board, piece, coordinate)
+
+        placeableCoordinate
+            // 相手側が一手進めた時の評価値を取得
+            .map { async { readNextMove(placedBoard, it, reversedPiece, count - 1) } }
+            // 相手側の評価値が最も高い場合を採用する
+            .maxOf { it.await() }
+            .let { -it }
+    }
 
     private fun Board.placeableCoordinateWithoutAroundCorner(piece: Cell.Piece): List<Board.Coordinate> {
         val coordinate = this.placeableCoordinates(piece)
@@ -33,15 +39,10 @@ class LeavePlaceableCoordinateAlgorithm {
         return coordinateWithoutCorner.ifEmpty { coordinate }
     }
 
-    private fun evaluate(board: Board, piece: Cell.Piece, placeableCoordinate: Int) =
-        MY_WEIGHT * placeableCoordinate -
-            OPPONENT_WEIGHT * board.placeableCoordinates(piece.reverse()).count() +
-            -board.count()[piece]
+    private fun evaluate(board: Board, piece: Cell.Piece, coordinate: Board.Coordinate) =
+        -board.openness(coordinate, piece)!!
 
     companion object {
-        const val REPEAT_AMOUNT = 5
-
-        const val MY_WEIGHT = 1
-        const val OPPONENT_WEIGHT = 1
+        const val REPEAT_AMOUNT = 0
     }
 }

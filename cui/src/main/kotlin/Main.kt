@@ -8,8 +8,11 @@ val deviseNextMoveUseCase = DeviseNextMoveUseCase(
 )
 
 fun main() = runBlocking {
-    var board = Board.create(8)
-    while (board.countNothing() > 0) {
+    var board = Board.create(20)
+    while (
+        board.countNothing() > 0 &&
+        (board.placeableCoordinates(Cell.Piece.Black) + board.placeableCoordinates(Cell.Piece.White)).isNotEmpty()
+    ) {
         board = placeByCPU(board, Cell.Piece.Black)
         board = placeByCPU(board, Cell.Piece.White)
     }

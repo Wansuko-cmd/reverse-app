@@ -18,7 +18,7 @@ class DeviseNextMoveUseCase(
         withContext(Dispatchers.Default) {
             if (useFormula && board.countNothing() >= 10) formulaAlgorithm(board, piece)?.let { return@withContext it }
             when {
-                board.countNothing() <= 10 -> checkAllPattenAlgorithm(board, piece)
+                board.countNothing() <= 12 -> checkAllPattenAlgorithm(board, piece)
                 else -> leavePlaceableCoordinateAlgorithm(board, piece)
             }
         }

@@ -8,15 +8,18 @@ import CheckAllPattenAlgorithm
 import Column
 import black
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import nothing
 import white
 import kotlin.test.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class CheckAllPattenAlgorithmTest {
     private val algorithm = CheckAllPattenAlgorithm()
 
     @Test
-    fun 全ての局面を総当たりして最も駒が取れる手を選択する() {
+    fun 全ての局面を総当たりして最も駒が取れる手を選択する() = runTest {
         val board = Board.reconstruct(
             columns = listOf(
                 Column.reconstruct(black(8)),
@@ -33,7 +36,7 @@ class CheckAllPattenAlgorithmTest {
     }
 
     @Test
-    fun 置ける場所がない場合はnullを返す() {
+    fun 置ける場所がない場合はnullを返す() = runTest {
         val board = Board.reconstruct(
             columns = listOf(
                 Column.reconstruct(white(8)),
