@@ -8,7 +8,7 @@ val deviseNextMoveUseCase = DeviseNextMoveUseCase(
 )
 
 fun main() = runBlocking {
-    var board = Board.create(20)
+    var board = Board.create(7)
     while (
         board.countNothing() > 0 &&
         (board.placeableCoordinates(Cell.Piece.Black) + board.placeableCoordinates(Cell.Piece.White)).isNotEmpty()

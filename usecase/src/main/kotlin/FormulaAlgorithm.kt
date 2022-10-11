@@ -11,7 +11,7 @@ interface FormulaQueryService {
     suspend fun getCoordinate(board: FormulaBoard, piece: Cell.Piece): FormulaBoard.FormulaCoordinate?
 }
 
-class FormulaBoard(private val columns: List<List<Cell>>) {
+data class FormulaBoard(private val columns: List<List<Cell>>) {
 
     init {
         assert(columns.size == 8)
@@ -40,6 +40,11 @@ class FormulaBoard(private val columns: List<List<Cell>>) {
         }
     }
 
+    fun toDisplayString(): String = this.toString()
+        .replace("Cell\$Nothing", " ")
+        .replace("Cell\$Piece\$Black", "○")
+        .replace("Cell\$Piece\$White", "●")
+
     companion object {
         fun from(board: Board): FormulaBoard = when {
             board.width < 8 -> fromSmallSizeBoard(board)
@@ -54,10 +59,11 @@ class FormulaBoard(private val columns: List<List<Cell>>) {
                     board[board.Coordinate(row, column)]
                 }
             }
+            println(columns)
             val newColumns = List(small) { Column.create(8) } +
                 columns.map { Column.create(small) + it + Column.create(big) } +
                 List(big) { Column.create(8) }
-            return FormulaBoard(newColumns)
+            return FormulaBoard(newColumns).also { println(it.toDisplayString()) }
         }
 
         private fun fromSameSizeBoard(board: Board): FormulaBoard =
