@@ -19,7 +19,6 @@ class DeviseNextMoveUseCase(
             if (useFormula) formulaAlgorithm(board, piece)?.let {
                 if (board.placeableCoordinates(piece).contains(it)) return@withContext it
             }
-            println("Not use")
             when {
                 board.countNothing() <= 11 -> checkAllPattenAlgorithm(board, piece)
                 else -> leavePlaceableCoordinateAlgorithm(board, piece)

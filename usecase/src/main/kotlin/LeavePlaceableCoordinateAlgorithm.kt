@@ -35,14 +35,23 @@ class LeavePlaceableCoordinateAlgorithm {
 
     private fun Board.placeableCoordinateWithoutAroundCorner(piece: Cell.Piece): List<Board.Coordinate> {
         val coordinate = this.placeableCoordinates(piece)
-        val coordinateWithoutCorner = coordinate - this.aroundCorner.toSet()
+        val withoutCoordinate = if (this.countNothing() <= 40) this.diagonalCorner else this.aroundCorner
+        val coordinateWithoutCorner = coordinate - withoutCoordinate.toSet()
         return coordinateWithoutCorner.ifEmpty { coordinate }
     }
 
     private fun evaluate(board: Board, piece: Cell.Piece, coordinate: Board.Coordinate) =
-        -board.openness(coordinate, piece)!!
+        -board.openness(coordinate, piece)!! + 3 * numOfAround(board, piece)
+
+    private fun numOfAround(board: Board, piece: Cell.Piece) =
+        board.corner.map { board[it] }.sumOf {
+            when (it) {
+                piece -> 1
+                else -> -1
+            } as Int
+        }
 
     companion object {
-        const val REPEAT_AMOUNT = 5
+        const val REPEAT_AMOUNT = 4
     }
 }

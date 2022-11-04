@@ -210,4 +210,123 @@ val rabbitFormulaData = listOf(
         piece = Cell.Piece.White,
         coordinate = FormulaBoard.FormulaCoordinate(2, 3),
     ),
+    // b4
+    FormulaData(
+        board = FormulaBoard(
+            listOf(
+                nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + white(1) + white(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + white(1) + white(1) + white(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + black(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + black(1) + white(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1)
+            )
+        ),
+        piece = Cell.Piece.Black,
+        coordinate = FormulaBoard.FormulaCoordinate(1, 3)
+    ),
+    // b3
+    FormulaData(
+        board = FormulaBoard(
+            listOf(
+                nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + black(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + black(1) + white(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + white(1) + white(1) + white(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + black(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + black(1) + white(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1)
+            )
+        ),
+        piece = Cell.Piece.White,
+        coordinate = FormulaBoard.FormulaCoordinate(1, 2)
+    ),
+    // b5
+    FormulaData(
+        board = FormulaBoard(
+            listOf(
+                nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + white(1) + black(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + white(1) + white(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + white(1) + white(1) + white(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + black(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + black(1) + white(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1)
+            )
+        ),
+        piece = Cell.Piece.Black,
+        coordinate = FormulaBoard.FormulaCoordinate(1, 4)
+    ),
+    // a4
+    FormulaData(
+        board = FormulaBoard(
+            listOf(
+                nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + white(1) + black(1) + black(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + black(1) + black(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + black(1) + white(1) + white(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + black(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + black(1) + white(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1)
+            )
+        ),
+        piece = Cell.Piece.White,
+        coordinate = FormulaBoard.FormulaCoordinate(0, 3)
+    ),
+    // a2
+    FormulaData(
+        board = FormulaBoard(
+            listOf(
+                nothing(1) + nothing(1) + nothing(1) + white(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + white(1) + black(1) + white(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + black(1) + black(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + black(1) + white(1) + white(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + black(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + black(1) + white(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1)
+            )
+        ),
+        piece = Cell.Piece.Black,
+        coordinate = FormulaBoard.FormulaCoordinate(0, 1)
+    ),
+    // a3
+    FormulaData(
+        board = FormulaBoard(
+            listOf(
+                nothing(1) + black(1) + nothing(1) + white(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + white(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + black(1) + black(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + black(1) + white(1) + white(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + black(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + black(1) + white(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1)
+            )
+        ),
+        piece = Cell.Piece.White,
+        coordinate = FormulaBoard.FormulaCoordinate(0, 2)
+    ),
+    // a5
+    FormulaData(
+        board = FormulaBoard(
+            listOf(
+                nothing(1) + black(1) + white(1) + white(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + white(1) + white(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + black(1) + white(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + black(1) + white(1) + white(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + black(1) + black(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + black(1) + white(1) + white(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + black(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1),
+                nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1) + nothing(1)
+            )
+        ),
+        piece = Cell.Piece.Black,
+        coordinate = FormulaBoard.FormulaCoordinate(0, 4)
+    ),
 )

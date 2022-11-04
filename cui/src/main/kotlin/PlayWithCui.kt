@@ -13,7 +13,7 @@ fun main() = runBlocking {
         board.countNothing() > 0 &&
         (board.placeableCoordinates(Cell.Piece.Black) + board.placeableCoordinates(Cell.Piece.White)).isNotEmpty()
     ) {
-        board = placeByPlayer(board, Cell.Piece.Black)
+        board = placeByCPU(board, Cell.Piece.Black)
         board = placeByCPU(board, Cell.Piece.White)
     }
     println(board.toDisplayString())
@@ -69,7 +69,7 @@ fun readCoordinate(board: Board, piece: Cell.Piece): Board.Coordinate {
 
 fun Board.toDisplayString(): String = this.toString()
     .replace("Cell\$Nothing", " ")
-    .replace("Cell\$Piece\$Black", "○")
+    .replace("Cell\$Piece\$Black", "◎")
     .replace("Cell\$Piece\$White", "●")
 
 inline fun <T> measure(block: () -> T): Pair<Long, T> {

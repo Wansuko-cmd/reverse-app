@@ -10,13 +10,19 @@ class Board private constructor(
             (0 until width)
                 .map { column -> Coordinate(row, column) }
         }
-    private val corner = listOf(
+    val corner = listOf(
         Coordinate(0, 0),
         Coordinate(0, width - 1),
         Coordinate(height - 1, 0),
         Coordinate(height - 1, width - 1),
     )
     val aroundCorner: List<Coordinate> = corner.flatMap { it.around }
+    val diagonalCorner: List<Coordinate> = listOf(
+        Coordinate(1, 1),
+        Coordinate(1, width - 2),
+        Coordinate(height - 2, 1),
+        Coordinate(height - 2, width - 2),
+    )
 
     init {
         assert(columns.distinctBy { it.size }.size == 1)
