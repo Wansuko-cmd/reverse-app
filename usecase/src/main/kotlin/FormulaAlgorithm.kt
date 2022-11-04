@@ -1,10 +1,31 @@
 class FormulaAlgorithm(
     private val formulaQueryService: FormulaQueryService,
 ) {
-    suspend operator fun invoke(board: Board, piece: Cell.Piece): Board.Coordinate? =
-        formulaQueryService
-            .getCoordinate(FormulaBoard.from(board), piece)
-            ?.toCoordinate(board)
+    suspend operator fun invoke(board: Board, piece: Cell.Piece): Board.Coordinate? {
+        val a = formulaQueryService
+            .getCoordinate(FormulaBoard.from(board), piece)?.toCoordinate(board)
+        if (a != null) return a
+        val b = formulaQueryService
+            .getCoordinate(FormulaBoard.from(board).rotate(), piece)?.rotate()?.rotate()?.rotate()?.toCoordinate(board)
+        if (b != null) return b
+        val c = formulaQueryService
+            .getCoordinate(FormulaBoard.from(board).rotate().rotate(), piece)?.rotate()?.rotate()?.toCoordinate(board)
+        if (c != null) return c
+        val d = formulaQueryService
+            .getCoordinate(FormulaBoard.from(board).rotate().rotate().rotate(), piece)?.rotate()?.toCoordinate(board)
+        if (d != null) return d
+        val e = formulaQueryService
+            .getCoordinate(FormulaBoard.from(board).reverse(), piece)?.reverse()?.toCoordinate(board)
+        if (e != null) return e
+        val f = formulaQueryService
+            .getCoordinate(FormulaBoard.from(board).reverse().rotate(), piece)?.reverse()?.rotate()?.rotate()?.rotate()?.toCoordinate(board)
+        if (f != null) return f
+        val g = formulaQueryService
+            .getCoordinate(FormulaBoard.from(board).reverse().rotate().rotate(), piece)?.reverse()?.rotate()?.rotate()?.toCoordinate(board)
+        if (g != null) return g
+        return formulaQueryService
+            .getCoordinate(FormulaBoard.from(board).reverse().rotate().rotate().rotate(), piece)?.reverse()?.rotate()?.toCoordinate(board)
+    }
 }
 
 interface FormulaQueryService {
@@ -27,6 +48,10 @@ data class FormulaBoard(private val columns: List<List<Cell>>) {
             else -> toCoordinateForBigSizeBoard(board)
         }
 
+        fun rotate() = FormulaCoordinate(7 - column, row)
+
+        fun reverse() = FormulaCoordinate(column, row)
+
         private fun toCoordinateForSmallSizeBoard(board: Board): Board.Coordinate {
             val width = (8 - board.width) / 2 + board.width % 2
             val height = (8 - board.height) / 2 + board.height % 2
@@ -40,10 +65,32 @@ data class FormulaBoard(private val columns: List<List<Cell>>) {
         }
     }
 
-    fun toDisplayString(): String = this.toString()
+    fun toDisplayString(): String = this.columns
+        .joinToString(separator = "\n") { "[$it]" }
+        .let { "Board(\n$it\n)" }
         .replace("Cell\$Nothing", " ")
         .replace("Cell\$Piece\$Black", "○")
         .replace("Cell\$Piece\$White", "●")
+
+    fun rotate(): FormulaBoard {
+        val list = columns.map { it.toMutableList() }.toMutableList()
+        columns.mapIndexed { row, cells ->
+            cells.mapIndexed { column, cell ->
+                list[7 - column][row] = cell
+            }
+        }
+        return FormulaBoard(list)
+    }
+
+    fun reverse(): FormulaBoard {
+        val list = columns.map { it.toMutableList() }.toMutableList()
+        columns.mapIndexed { row, cells ->
+            cells.mapIndexed { column, cell ->
+                list[column][row] = cell
+            }
+        }
+        return FormulaBoard(list)
+    }
 
     companion object {
         fun from(board: Board): FormulaBoard = when {

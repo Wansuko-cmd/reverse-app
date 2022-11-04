@@ -7,13 +7,13 @@ private val deviseNextMoveUseCase = DeviseNextMoveUseCase(
     checkAllPattenAlgorithm = CheckAllPattenAlgorithm(),
 )
 
-fun play() = runBlocking {
-    var board = Board.create(20)
+fun main() = runBlocking {
+    var board = Board.create(8)
     while (
         board.countNothing() > 0 &&
         (board.placeableCoordinates(Cell.Piece.Black) + board.placeableCoordinates(Cell.Piece.White)).isNotEmpty()
     ) {
-        board = placeByCPU(board, Cell.Piece.Black)
+        board = placeByPlayer(board, Cell.Piece.Black)
         board = placeByCPU(board, Cell.Piece.White)
     }
     println(board.toDisplayString())

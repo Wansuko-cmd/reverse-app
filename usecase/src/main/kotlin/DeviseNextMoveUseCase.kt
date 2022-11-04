@@ -6,7 +6,6 @@ class DeviseNextMoveUseCase(
     private val leavePlaceableCoordinateAlgorithm: LeavePlaceableCoordinateAlgorithm,
     private val checkAllPattenAlgorithm: CheckAllPattenAlgorithm,
 ) {
-    val randomAlgorithm = RandomAlgorithm()
     /**
      *  次に置くべき駒の場所を返す
      *  置ける場所がない場合はnullを返す
@@ -17,8 +16,10 @@ class DeviseNextMoveUseCase(
         useFormula: Boolean = true,
     ): Board.Coordinate? =
         withContext(Dispatchers.Default) {
-            return@withContext randomAlgorithm(board, piece)
-            if (useFormula && board.countNothing() >= 10) formulaAlgorithm(board, piece)?.let { return@withContext it }
+            if (useFormula) formulaAlgorithm(board, piece)?.let {
+                if (board.placeableCoordinates(piece).contains(it)) return@withContext it
+            }
+            println("Not use")
             when {
                 board.countNothing() <= 11 -> checkAllPattenAlgorithm(board, piece)
                 else -> leavePlaceableCoordinateAlgorithm(board, piece)
