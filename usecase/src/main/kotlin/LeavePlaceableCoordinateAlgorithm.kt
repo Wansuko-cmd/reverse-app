@@ -43,6 +43,6 @@ class LeavePlaceableCoordinateAlgorithm {
         -board.openness(coordinate, piece)!!
 
     companion object {
-        const val REPEAT_AMOUNT = 0
+        const val REPEAT_AMOUNT = 5
     }
 }

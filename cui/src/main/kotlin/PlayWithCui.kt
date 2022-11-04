@@ -1,14 +1,14 @@
 import kotlinx.coroutines.runBlocking
 import kotlin.system.measureTimeMillis
 
-val deviseNextMoveUseCase = DeviseNextMoveUseCase(
+private val deviseNextMoveUseCase = DeviseNextMoveUseCase(
     formulaAlgorithm = FormulaAlgorithm(FormulaQueryServiceImpl()),
     leavePlaceableCoordinateAlgorithm = LeavePlaceableCoordinateAlgorithm(),
     checkAllPattenAlgorithm = CheckAllPattenAlgorithm(),
 )
 
-fun main() = runBlocking {
-    var board = Board.create(7)
+fun play() = runBlocking {
+    var board = Board.create(20)
     while (
         board.countNothing() > 0 &&
         (board.placeableCoordinates(Cell.Piece.Black) + board.placeableCoordinates(Cell.Piece.White)).isNotEmpty()

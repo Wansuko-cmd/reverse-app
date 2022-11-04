@@ -11,6 +11,21 @@ sealed interface Cell {
         object White : Piece {
             override fun reverse(): Piece = Black
         }
+        companion object {
+            fun from(value: Int) = when (value) {
+                1 -> Black
+                2 -> White
+                else -> throw NoSuchElementException()
+            }
+        }
+    }
+
+    companion object {
+        fun from(value: Int) = when (value) {
+            0 -> Nothing
+            1, 2 -> Piece.from(value)
+            else -> throw NoSuchElementException()
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.7.10"
     application
+    alias(libs.plugins.serialization)
 }
 
 dependencies {
@@ -8,6 +9,7 @@ dependencies {
     implementation(project(":usecase"))
     implementation(project(":data"))
     implementation(libs.coroutine)
+    implementation(libs.bundles.ktor.client)
     testImplementation(libs.bundles.test)
 }
 
