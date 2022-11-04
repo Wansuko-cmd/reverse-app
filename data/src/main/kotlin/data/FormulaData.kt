@@ -2,7 +2,7 @@ package data
 
 import FormulaBoard
 
-val formulaData = rabbitFormulaData + tigerFormulaData
+val formulaData = rabbitFormulaData + tigerFormulaData + cowFormulaData
 
 data class FormulaData(
     val board: FormulaBoard,
